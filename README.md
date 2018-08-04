@@ -12,3 +12,5 @@ curl https://raw.githubusercontent.com/NicodemeB/custom-install/master/custom_in
 ```bash
 curl https://raw.githubusercontent.com/NicodemeB/custom-install/master/custom_install.sh | bash --from-scratch --distri macos
 ```
+
+sh -c "$(wget https://raw.githubusercontent.com/NicodemeB/custom-install/master/custom_install.sh -O -)"
