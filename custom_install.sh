@@ -190,6 +190,9 @@ if [ "$DISTRI" = "macos" ] ; then
 	git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 fi
 
+curl -L https://iterm2.com/shell_integration/zsh -o ~/.iterm2_shell_integration.zsh
+echo "source ~/.iterm2_shell_integration.zsh" ~/.zshrc
+
 zsh -c "source ~/.zshrc"
 
 zsh
