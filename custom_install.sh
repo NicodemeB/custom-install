@@ -191,7 +191,7 @@ if [ "$DISTRI" = "macos" ] ; then
 fi
 
 curl -L https://iterm2.com/shell_integration/zsh -o ~/.iterm2_shell_integration.zsh
-echo "source ~/.iterm2_shell_integration.zsh" ~/.zshrc
+echo "source ~/.iterm2_shell_integration.zsh" >> ~/.zshrc
 
 zsh -c "source ~/.zshrc"
 
