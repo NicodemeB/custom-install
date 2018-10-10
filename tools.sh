@@ -16,3 +16,12 @@ checkRoot() {
 	    exit
 	fi
 }
+
+disableIPv6 () {
+	IPV6=$(cat /etc/sysctl.conf |grep -c 'net.ipv6.conf.all.disable_ipv6 = 1')
+	if [ $IPV6 -eq 0 ] ; then
+		echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf
+		sysctl -p
+		display $BLUE INFO 'IPv6 disabled'
+	fi
+}

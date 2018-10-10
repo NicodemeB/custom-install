@@ -130,6 +130,7 @@ while true; do
     esac
 done
 
+disableIPv6
 fromScratchInstall
 shellInstall
 WebCVInstall

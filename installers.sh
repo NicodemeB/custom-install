@@ -68,7 +68,6 @@ shellInstall() {
 }
 
 WebCVInstall () {
-	display $BLUE INFO "test"
 	if [ $WEBCV -eq 1 ] ; then 
 		case "$DISTRI" in 
 			debian) 
