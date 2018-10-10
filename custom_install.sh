@@ -131,6 +131,7 @@ while true; do
 done
 
 disableIPv6
+installBasicNeeds
 fromScratchInstall
 shellInstall
 WebCVInstall

@@ -15,7 +15,7 @@ setDrisi() {
 		# echo "ok will use apt"
 		continue
 	else
-		echo "What you entered is not supported"
+		display $RED ERROR "What you entered is not supported"
 		exit -1;
 	fi
 }
@@ -25,8 +25,8 @@ setVerbose () {
 }
 
 setWebCV () {
-	WEBCV=1
+	WEBCV=$1
 }
 setOpenVPN () {
-	OPENVPN=1
+	OPENVPN=$1
 }
