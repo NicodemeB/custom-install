@@ -5,7 +5,7 @@ WEBCVGIT="https://github.com/NicodemeB/WebCV.git"
 DIRECTORY="WebCV"
 DOMAIN="nicode.me"
 
-LALA="\n\
+APACHEREDIRECT="\n\
 		<Directory />\n\
 			Options FollowSymLinks\n\
 			AllowOverride None\n\
@@ -36,14 +36,24 @@ installWeb () {
 
 	sed -i "/${DIRECTORY}/a \ XXX" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
 
-	sed -i "s|XXX|${LALA}|" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
+	sed -i "s|XXX|${APACHEREDIRECT}|" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
 
 	# cat /etc/apache2/sites-available/$DIRECTORY-ssl.conf
 
 	rm /var/www/html/index.html
 
-	a2dissite 000-default.conf  default-ssl.conf
+	a2dissite 000-default.conf default-ssl.conf
 	a2ensite WebCV-ssl.conf
 	a2enmod ssl
 	systemctl reload apache2
+
+	display $BLUE INFO "apache2 installed and configured, installing letsencrypt"
+
+	add-apt-repository ppa:certbot/certbot
+	apt update
+
+	apt install python-certbot-apache
+
+	certbot --apache -d $DOMAIN -d www.$DOMAIN
+
 }
