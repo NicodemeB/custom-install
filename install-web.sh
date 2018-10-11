@@ -1,9 +1,9 @@
 #!/bin/zsh
 
-SERVERADMIN="benjamin.nicodeme@icloud.com"
-WEBCVGIT="https://github.com/NicodemeB/WebCV.git"
-DIRECTORY="WebCV"
-DOMAIN="nicode.me"
+# SERVERADMIN="benjamin.nicodeme@icloud.com"
+# WEBCVGIT="https://github.com/NicodemeB/WebCV.git"
+# DIRECTORY="WebCV"
+# DOMAIN="nicode.me"
 
 APACHEREDIRECT="\n\
 		<Directory />\n\
@@ -23,37 +23,40 @@ installWeb () {
 	echo Y | apt install apache2 php7.0 php7.0-common libapache2-mod-php7.0	git
 
 	cd /var/www/
-	mkdir $DIRECTORY
-	cd $DIRECTORY
-	git clone $WEBCVGIT
 
-	cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/$DIRECTORY-ssl.conf
-	sed -i "/ServerAdmin/i \ServerName ${DOMAIN}" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
-	sed -i "s/ServerName/\t\tServerName/" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
+	composeGithubURL
 
-	sed -i "s|webmaster@localhost|${SERVERADMIN}|" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
-	sed -i "s|DocumentRoot /var/www/html|DocumentRoot /var/www/${DIRECTORY}|" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
+	echo $GITHUB_URL
 
-	sed -i "/${DIRECTORY}/a \ XXX" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
+	git clone $GITHUB_URL
 
-	sed -i "s|XXX|${APACHEREDIRECT}|" /etc/apache2/sites-available/$DIRECTORY-ssl.conf
+	cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
+	sed -i "/ServerAdmin/i \ServerName ${DOMAIN}" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
+	sed -i "s/ServerName/\t\tServerName/" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
 
-	# cat /etc/apache2/sites-available/$DIRECTORY-ssl.conf
+	sed -i "s|webmaster@localhost|${SERVER_ADMIN}|" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
+	sed -i "s|DocumentRoot /var/www/html|DocumentRoot /var/www/${SITE_DIRECTORY}|" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
+
+	sed -i "/${SITE_DIRECTORY}/a \ XXX" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
+
+	sed -i "s|XXX|${APACHEREDIRECT}|" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
+
+	# cat /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
 
 	rm /var/www/html/index.html
 
 	a2dissite 000-default.conf default-ssl.conf
-	a2ensite WebCV-ssl.conf
+	a2ensite $SITE_DIRECTORY-ssl.conf
 	a2enmod ssl
 	systemctl reload apache2
 
 	display $BLUE INFO "apache2 installed and configured, installing letsencrypt"
 
-	add-apt-repository ppa:certbot/certbot
-	apt update
+	# add-apt-repository ppa:certbot/certbot
+	# apt update
 
-	apt install python-certbot-apache
+	# apt install python-certbot-apache
 
-	certbot --apache -d $DOMAIN -d www.$DOMAIN
+	# certbot --apache -d $DOMAIN -d www.$DOMAIN
 
 }

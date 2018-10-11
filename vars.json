@@ -13,8 +13,12 @@
     "CLIENT_NAME": "benjamin"
   },
   "webcv" : {
-    "login": "lambda",
-    "id": 222,
-    "node_id": "MDQ6VXNlcjM3Mzk4"
+    "GITHUB_USERNAME": "NicodemeB",
+    "GITHUB_TOKEN": "",
+    "GITHUB_TOKEN_IS_PRIVATE": "yes",
+    "GITHUB_URL": "github.com/NicodemeB/WebCV.git",
+    "SERVER_ADMIN": "benjamin.nicodeme@icloud.com",
+    "SITE_DIRECTORY": "WebCV",
+    "DOMAIN": "nicode.me"
   }
 }

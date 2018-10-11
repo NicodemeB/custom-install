@@ -33,7 +33,7 @@ installBasicNeeds () {
 	if [ "$DISTRI" = "debian" ] ; then
 		if [ $(getent passwd | awk -F: -v user="$(whoami)" '$1 == user {print $NF}') != "/bin/zsh" ] ; then
 			apt update
-			echo y |apt install git zsh htop
+			echo y |apt install git zsh htop curl
 			echo '/bin/zsh' |chsh root 
 		fi
 	fi
@@ -59,4 +59,29 @@ importVars () {
 	DNS=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['DNS'])")
 	VPN_SERVER_IP_DOMAIN=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['VPN_SERVER_IP_DOMAIN'])")
 	CLIENT_NAME=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['CLIENT_NAME'])")
+
+
+	GITHUB_TOKEN=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['GITHUB_TOKEN'])")
+	GITHUB_USERNAME=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['GITHUB_USERNAME'])")
+	GITHUB_TOKEN_IS_PRIVATE=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['GITHUB_TOKEN_IS_PRIVATE'])")
+
+	GITHUB_URL=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['GITHUB_URL'])")
+	SERVER_ADMIN=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['SERVER_ADMIN'])")
+	SITE_DIRECTORY=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['SITE_DIRECTORY'])")
+	DOMAIN=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['DOMAIN'])")
+
+	
 }
+
+composeGithubURL () {
+
+	if [ "$GITHUB_TOKEN_IS_PRIVATE" = "yes" ] ; then
+		GITHUB_URL="https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@${GITHUB_URL}"
+	else
+		GITHUB_URL="https://${GITHUB_URL}"
+	fi
+}
+
+
+
+
