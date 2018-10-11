@@ -1,11 +1,15 @@
 #!/bin/zsh
 
-# SERVERADMIN="benjamin.nicodeme@icloud.com"
-# WEBCVGIT="https://github.com/NicodemeB/WebCV.git"
-# DIRECTORY="WebCV"
-# DOMAIN="nicode.me"
+installWeb () {
 
-APACHEREDIRECT="\n\
+	REDIRECT_80_TO_443="\\
+	<VirtualHost *:80>\n\
+                ServerName ${DOMAIN}\n\
+                ServerAlias www.${DOMAIN}\n\
+                Redirect permanent / https://${DOMAIN}/\n\
+        </VirtualHost>\n"
+
+	APACHE_REDIRECT="\n\
 		<Directory />\n\
 			Options FollowSymLinks\n\
 			AllowOverride None\n\
@@ -18,8 +22,6 @@ APACHEREDIRECT="\n\
 			Allow from all\n\
 		</Directory>"
 
-
-installWeb () {
 	echo Y | apt install apache2 php7.0 php7.0-common libapache2-mod-php7.0	git
 
 	cd /var/www/
@@ -39,7 +41,9 @@ installWeb () {
 
 	sed -i "/${SITE_DIRECTORY}/a \ XXX" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
 
-	sed -i "s|XXX|${APACHEREDIRECT}|" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
+	sed -i "s|XXX|${APACHE_REDIRECT}|" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
+
+	sed -i "2i ${REDIRECT_80_TO_443}" /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
 
 	# cat /etc/apache2/sites-available/$SITE_DIRECTORY-ssl.conf
 
@@ -52,11 +56,11 @@ installWeb () {
 
 	display $BLUE INFO "apache2 installed and configured, installing letsencrypt"
 
-	# add-apt-repository ppa:certbot/certbot
-	# apt update
+	echo -en '\n' | add-apt-repository ppa:certbot/certbot
+	apt update
 
-	# apt install python-certbot-apache
+	echo y |apt install python-certbot-apache
 
-	# certbot --apache -d $DOMAIN -d www.$DOMAIN
+	certbot --authenticator standalone --installer apache -d $DOMAIN -d www.$DOMAIN --pre-hook "systemctl stop apache2" --post-hook "systemctl start apache2" --noninteractive --agree-tos --email $LETS_ENCRYPT_EMAIL
 
 }

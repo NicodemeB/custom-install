@@ -13,12 +13,13 @@
     "CLIENT_NAME": "benjamin"
   },
   "webcv" : {
-    "GITHUB_USERNAME": "NicodemeB",
+    "GITHUB_USERNAME": "",
     "GITHUB_TOKEN": "",
     "GITHUB_TOKEN_IS_PRIVATE": "yes",
     "GITHUB_URL": "github.com/NicodemeB/WebCV.git",
     "SERVER_ADMIN": "benjamin.nicodeme@icloud.com",
     "SITE_DIRECTORY": "WebCV",
-    "DOMAIN": "nicode.me"
+    "DOMAIN": "nicode.me",
+    "LETS_ENCRYPT_EMAIL": "benjamin.nicodeme@icloud.com"
   }
 }

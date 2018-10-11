@@ -33,7 +33,7 @@ installBasicNeeds () {
 	if [ "$DISTRI" = "debian" ] ; then
 		if [ $(getent passwd | awk -F: -v user="$(whoami)" '$1 == user {print $NF}') != "/bin/zsh" ] ; then
 			apt update
-			echo y |apt install git zsh htop curl
+			echo y |apt install git zsh htop curl dirmngr
 			echo '/bin/zsh' |chsh root 
 		fi
 	fi
@@ -70,7 +70,7 @@ importVars () {
 	SITE_DIRECTORY=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['SITE_DIRECTORY'])")
 	DOMAIN=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['DOMAIN'])")
 
-	
+	LETS_ENCRYPT_EMAIL=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['webcv']['LETS_ENCRYPT_EMAIL'])")
 }
 
 composeGithubURL () {
