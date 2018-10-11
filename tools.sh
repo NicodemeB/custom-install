@@ -46,3 +46,17 @@ testFile () {
 	    exit
 	fi
 }
+
+importVars () {
+	KEY_COUNTRY=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['KEY_COUNTRY'])")
+	KEY_PROVINCE=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['KEY_PROVINCE'])")
+	KEY_CITY=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['KEY_CITY'])")
+	KEY_ORG=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['KEY_ORG'])")
+	KEY_EMAIL=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['KEY_EMAIL'])")
+	KEY_OU=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['KEY_OU'])")
+	KEY_NAME=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['KEY_NAME'])")
+	KEY_CN=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['KEY_CN'])")
+	DNS=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['DNS'])")
+	VPN_SERVER_IP_DOMAIN=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['VPN_SERVER_IP_DOMAIN'])")
+	CLIENT_NAME=$(cat vars.json | python3 -c "import sys, json; print(json.load(sys.stdin)['openvpn']['CLIENT_NAME'])")
+}

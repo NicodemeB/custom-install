@@ -1,6 +1,7 @@
+
 installDependencies () {
 	display $BLUE INFO "installing dependencies"
-	echo y |apt install openvpn
+	echo y |apt install openvpn curl python3
 }
 
 enableRouting() {
@@ -14,7 +15,7 @@ initServerFile() {
 
 	gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz > /etc/openvpn/server.conf
 	sed -i 's/;push "redirect-gateway def1 bypass-dhcp"/push "redirect-gateway def1 bypass-dhcp"/' /etc/openvpn/server.conf
-	sed -i 's/;push "dhcp-option DNS 208.67.222.222"/push "dhcp-option DNS 4.4.4.2"/' /etc/openvpn/server.conf
+	sed -i "s/;push \"dhcp-option DNS 208.67.222.222\"/push \"dhcp-option DNS ${DNS}\"/" /etc/openvpn/server.conf
 	sed -i 's/;user nobody/user nobody/' /etc/openvpn/server.conf
 	sed -i 's/;group nogroup/group nogroup/' /etc/openvpn/server.conf
 
@@ -23,7 +24,6 @@ initServerFile() {
 
 buildCA() {
 	display $BLUE INFO "building CA"
-
 	# cp -r /usr/share/easy-rsa/ /etc/openvpn
 	cd
 	git clone https://github.com/OpenVPN/easy-rsa-old.git
@@ -38,16 +38,16 @@ buildCA() {
 
 	mkdir /etc/openvpn/easy-rsa/keys
 
-	sed -i 's/export KEY_COUNTRY="US"/export KEY_COUNTRY="BE"/' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export KEY_PROVINCE="CA"/export KEY_PROVINCE="BE"/' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export KEY_CITY="SanFrancisco"/export KEY_CITY="Bxl"/' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export KEY_ORG="Fort-Funston"/export KEY_ORG="nicode.me"/' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export KEY_EMAIL=mail@host.domain//' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export KEY_EMAIL="me@myhost.mydomain"/export KEY_EMAIL="dev.null@nicode.me"/' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export KEY_OU=changeme/export KEY_OU="nicode.me"/' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export KEY_NAME=changeme/export KEY_NAME="server"/' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export KEY_CN=changeme/export KEY_CN=vpnserver.nicode.me/' /etc/openvpn/easy-rsa/vars
-	sed -i 's/export PKCS11_MODULE_PATH=changeme//' /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_COUNTRY=\"US\"/export KEY_COUNTRY=\"${KEY_COUNTRY}\"/" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_PROVINCE=\"CA\"/export KEY_PROVINCE=\"${KEY_PROVINCE}\"/" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_CITY=\"SanFrancisco\"/export KEY_CITY=\"${KEY_CITY}\"/" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_ORG=\"Fort-Funston\"/export KEY_ORG=\"${KEY_ORG}\"/" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_EMAIL=mail@host.domain//" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_EMAIL=\"me@myhost.mydomain\"/export KEY_EMAIL=\"${KEY_EMAIL}\"/" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_OU=changeme/export KEY_OU=\"${KEY_OU}\"/" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_NAME=changeme/export KEY_NAME=\"${KEY_NAME}\"/" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export KEY_CN=changeme/export KEY_CN=KEY_CN/" /etc/openvpn/easy-rsa/vars
+	sed -i "s/export PKCS11_MODULE_PATH=changeme//" /etc/openvpn/easy-rsa/vars
 		
 	openssl dhparam -out /etc/openvpn/dh2048.pem 2048
 	# cp /etc/ssl/openssl.cnf /etc/openvpn/easy-rsa/openssl-1.1.0.cnf
@@ -83,7 +83,7 @@ generateClientCertificate () {
 	mv /etc/openvpn/easy-rsa/keys/$CLIENTNAME.key /etc/openvpn/easy-rsa/keys/$CLIENTNAME/
 
 	cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
-	sed -i 's/my-server-1/vpn.nicode.me/' /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
+	sed -i "s/my-server-1/${VPN_SERVER_IP_DOMAIN}/" /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 	sed -i 's/;user nobody/user nobody/' /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 	sed -i 's/;group nogroup/group nogroup/' /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 
@@ -105,9 +105,9 @@ generateClientCertificate () {
 	cat /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.key >> /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 	echo '</key>' >> /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 
-	mv /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn /etc/openvpn/easy-rsa/keys/$CLIENTNAME/vpn.nicode.me-$CLIENTNAME.ovpn
+	mv /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$VPN_SERVER_IP_DOMAIN.ovpn
 
-	display $BLUE INFO "client config .ovpn file can be found @ /etc/openvpn/easy-rsa/keys/$CLIENTNAME/vpn.nicode.me-$CLIENTNAME.ovpn"
+	display $BLUE INFO "client config .ovpn file can be found @ /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$VPN_SERVER_IP_DOMAIN.ovpn"
 }
 
 installOpenVPN () {
@@ -115,10 +115,9 @@ installOpenVPN () {
 	initServerFile
 	enableRouting
 	buildCA
-	sleep 1
 	copyKeysAndCertificates
 	systemctl restart openvpn
-	generateClientCertificate client1
+	generateClientCertificate $CLIENT_NAME
 	systemctl daemon-reload
 	systemctl restart openvpn
 }

@@ -26,3 +26,16 @@ curl https://raw.githubusercontent.com/NicodemeB/custom-install/master/custom_in
 ```
 
 sh -c "$(wget https://raw.githubusercontent.com/NicodemeB/custom-install/master/custom_install.sh -O -)"-->
+
+
+## Variables 
+Varibales for all installations are stored in a JSON file. If you need to edit variables, best method is to download the git in local, change vars, and than execute it in ssh ass following :
+
+```zsh
+scp -r custom-install root@192.168.250.166: >> /dev/null 2> /dev/null ; ssh root@192.168.250.166 'cd ~/custom-install ; echo y |./custom_install.sh'
+```
+
+Where you can setup argss
+
+### OpenVPN
+

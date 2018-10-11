@@ -1,0 +1,20 @@
+{
+  "openvpn" : {
+    "KEY_COUNTRY": "BE",
+    "KEY_PROVINCE": "BE",
+    "KEY_CITY": "BXL",
+    "KEY_ORG": "nicode.me",
+    "KEY_EMAIL": "dev.null@nicode.me",
+    "KEY_OU": "nicode.me",
+    "KEY_NAME": "server",
+    "KEY_CN": "vpn.nicode.me",
+    "DNS" : "8.8.8.8",
+    "VPN_SERVER_IP_DOMAIN": "192.168.250.166",
+    "CLIENT_NAME": "benjamin"
+  },
+  "webcv" : {
+    "login": "lambda",
+    "id": 222,
+    "node_id": "MDQ6VXNlcjM3Mzk4"
+  }
+}

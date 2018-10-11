@@ -130,6 +130,7 @@ while true; do
     esac
 done
 
+importVars
 disableIPv6
 installBasicNeeds
 fromScratchInstall
