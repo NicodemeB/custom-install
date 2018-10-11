@@ -10,7 +10,7 @@ installWeb () {
         </VirtualHost>\n"
 
 	APACHE_REDIRECT="\n\
-		<Directory />\n\
+		<Directory /var/www/${SITE_DIRECTORY}>\n\
 			Options FollowSymLinks\n\
 			AllowOverride None\n\
 		</Directory>\n\
@@ -20,7 +20,9 @@ installWeb () {
 			Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch\n\
 			Order allow,deny\n\
 			Allow from all\n\
-		</Directory>"
+		</Directory>\n\
+		ErrorDocument 404 https://${DOMAIN}\n\
+		ErrorDocument 403 https://${DOMAIN}"
 
 	echo Y | apt install apache2 php7.0 php7.0-common libapache2-mod-php7.0	git
 
