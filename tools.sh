@@ -38,3 +38,11 @@ installBasicNeeds () {
 		fi
 	fi
 }
+
+# args - file to test existence
+testFile () {
+	if [ ! -f $1 ]; then
+	    display $RED ERROR "File not $1 found!"
+	    exit
+	fi
+}

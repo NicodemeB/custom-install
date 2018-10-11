@@ -61,7 +61,13 @@ buildCA() {
 
 copyKeysAndCertificates () {
 	display $BLUE INFO "Copying server files"
-	cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn
+	testFile /etc/openvpn/easy-rsa/keys/server.crt
+	testFile /etc/openvpn/easy-rsa/keys/server.key
+	testFile /etc/openvpn/easy-rsa/keys/ca.crt
+
+	cp /etc/openvpn/easy-rsa/keys/server.crt /etc/openvpn 
+	cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn 
+	cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn 
 }
 
 generateClientCertificate () {
@@ -72,10 +78,12 @@ generateClientCertificate () {
 	./pkitool $CLIENTNAME
 
 	mkdir /etc/openvpn/easy-rsa/keys/$CLIENTNAME
-	mv $CLIENTNAME* $CLIENTNAME/
+	mv /etc/openvpn/easy-rsa/keys/$CLIENTNAME.csr /etc/openvpn/easy-rsa/keys/$CLIENTNAME/
+	mv /etc/openvpn/easy-rsa/keys/$CLIENTNAME.crt /etc/openvpn/easy-rsa/keys/$CLIENTNAME/
+	mv /etc/openvpn/easy-rsa/keys/$CLIENTNAME.key /etc/openvpn/easy-rsa/keys/$CLIENTNAME/
 
 	cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
-	sed -i 's/my-server-1/euro.org/' /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
+	sed -i 's/my-server-1/vpn.nicode.me/' /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 	sed -i 's/;user nobody/user nobody/' /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 	sed -i 's/;group nogroup/group nogroup/' /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 
@@ -96,6 +104,10 @@ generateClientCertificate () {
 	echo '<key>' >> /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 	cat /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.key >> /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
 	echo '</key>' >> /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn
+
+	mv /etc/openvpn/easy-rsa/keys/$CLIENTNAME/$CLIENTNAME.ovpn /etc/openvpn/easy-rsa/keys/$CLIENTNAME/vpn.nicode.me-$CLIENTNAME.ovpn
+
+	display $BLUE INFO "client config .ovpn file can be found @ /etc/openvpn/easy-rsa/keys/$CLIENTNAME/vpn.nicode.me-$CLIENTNAME.ovpn"
 }
 
 installOpenVPN () {
