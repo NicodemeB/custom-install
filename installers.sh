@@ -1,8 +1,8 @@
 fromScratchInstall () {
-	if [ $FROMSCRATCH -eq 1 ] ; then 
+	if [ $FROMSCRATCH -eq 1 ] ; then
 		display $BLUE INFO "ok let's do it from scratch"
-		case "$DISTRI" in 
-			debian) 
+		case "$DISTRI" in
+			debian)
 				if [ "$(whoami)" = "root" ] ; then
 				   continue
 				else
@@ -11,7 +11,7 @@ fromScratchInstall () {
 				fi
 				display $BLUE INFO "ok let's install git htop curl zsh screen net-tools dnsutils"
 				apt install git htop curl zsh screen net-tools dnsutils
-				display $BLUE INFO "packages installed"	
+				display $BLUE INFO "packages installed"
 				;;
 
 			macos)
@@ -28,7 +28,7 @@ fromScratchInstall () {
 }
 
 shellInstall() {
-	if [ $SHELL -eq 1 ] ; then 
+	if [ $SHELL -eq 1 ] ; then
 		display $YELLOW WARNING "Please type 'exit' after ohmyzsh installating to continue the install"
 		sleep 2
 		display $BLUE INFO "ok let's install ohmyzsh"
@@ -38,7 +38,7 @@ shellInstall() {
 		display $BLUE INFO "ok let's customize ohmyzsh"
 		sed -i 's/robbyrussell/agnoster/' ~/.zshrc
 		sed -i 's/plugins=(git)/plugins=(\n\tgit\n\tnanoc\n\tz\n\tzsh-autosuggestions\n\t)/' ~/.zshrc
-		sed -i "s/prompt_segment blue black '%~'/prompt_segment blue black '%c'/" ~/.oh-my-zsh/themes/agnoster.zsh-theme
+		sed -i "s/prompt_segment blue \$CURRENT_FG '%~'/prompt_segment blue \$CURRENT_FG '%c'/" ~/.oh-my-zsh/themes/agnoster.zsh-theme
 		display $BLUE INFO "ohmyzsh customized"
 
 
@@ -48,11 +48,11 @@ shellInstall() {
 		display $BLUE INFO "screen customized"
 
 
-		if [ "$DISTRI" = "macos" ] ; then 
+		if [ "$DISTRI" = "macos" ] ; then
 			git clone https://github.com/powerline/fonts.git --depth=1
-			cd fonts 
+			cd fonts
 			./install.sh
-			cd .. 
+			cd ..
 			rm -rf fonts
 
 			git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
@@ -68,9 +68,9 @@ shellInstall() {
 }
 
 WebCVInstall () {
-	if [ $WEBCV -eq 1 ] ; then 
-		case "$DISTRI" in 
-			debian) 
+	if [ $WEBCV -eq 1 ] ; then
+		case "$DISTRI" in
+			debian)
 				if [ "$(whoami)" = "root" ] ; then
 				   continue
 				else
@@ -92,9 +92,9 @@ WebCVInstall () {
 }
 
 OpenVPNInstall () {
-	if [ $OPENVPN -eq 1 ] ; then 
-		case "$DISTRI" in 
-			debian) 
+	if [ $OPENVPN -eq 1 ] ; then
+		case "$DISTRI" in
+			debian)
 				if [ "$(whoami)" = "root" ] ; then
 				   continue
 				else
@@ -102,9 +102,9 @@ OpenVPNInstall () {
 				    exit
 				fi
 				display $BLUE INFO "ok let's install openvpn-server"
-				
+
 				installOpenVPN
-				
+
 				;;
 
 			macos)
