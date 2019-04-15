@@ -63,7 +63,7 @@ shellInstall() {
 
 		zsh -c "source ~/.zshrc"
 
-		echo '/bin/zsh' |chsh echo $(whoami)
+		echo '/bin/zsh' |chsh 
 		zsh
 	fi
 }
