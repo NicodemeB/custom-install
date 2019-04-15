@@ -63,7 +63,7 @@ shellInstall() {
 
 		zsh -c "source ~/.zshrc"
 
-		echo '/bin/zsh' |chsh 
+		chsh -s '/bin/zsh'
 		zsh
 	fi
 }
