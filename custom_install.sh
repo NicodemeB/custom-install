@@ -132,7 +132,7 @@ done
 
 importVars
 disableIPv6
-installBasicNeeds
+# installBasicNeeds
 fromScratchInstall
 shellInstall
 WebCVInstall

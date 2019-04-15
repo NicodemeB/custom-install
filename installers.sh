@@ -10,7 +10,7 @@ fromScratchInstall () {
 				    exit
 				fi
 				display $BLUE INFO "ok let's install git htop curl zsh screen net-tools dnsutils"
-				apt install git htop curl zsh screen net-tools dnsutils
+				apt install git htop curl zsh screen net-tools dnsutils dirmngr
 				display $BLUE INFO "packages installed"
 				;;
 
@@ -63,6 +63,7 @@ shellInstall() {
 
 		zsh -c "source ~/.zshrc"
 
+		echo '/bin/zsh' |chsh echo $(whoami)
 		zsh
 	fi
 }
