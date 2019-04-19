@@ -37,7 +37,7 @@ shellInstall() {
 
 		display $BLUE INFO "ok let's customize ohmyzsh"
 		sed -i 's/robbyrussell/agnoster/' ~/.zshrc
-		sed -i 's/plugins=(git)/plugins=(\n\tgit\n\tnanoc\n\tz\n\tzsh-autosuggestions\n\t)/' ~/.zshrc
+		sed -i 's/plugins=(git)/plugins=(\n\tgit\n\tnanoc\n\tz\n\tzsh-autosuggestions\n\thistory-substring-search\n\t)/' ~/.zshrc
 		sed -i "s/prompt_segment blue \$CURRENT_FG '%~'/prompt_segment blue \$CURRENT_FG '%c'/" ~/.oh-my-zsh/themes/agnoster.zsh-theme
 		display $BLUE INFO "ohmyzsh customized"
 
