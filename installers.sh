@@ -2,6 +2,30 @@ fromScratchInstall () {
 	if [ $FROMSCRATCH -eq 1 ] ; then
 		display $BLUE INFO "ok let's do it from scratch"
 		case "$DISTRI" in
+			debian)
+				if [ "$(whoami)" = "root" ] ; then
+				   continue
+				else
+					display $RED ERROR "Please perform from scratch install from root account"
+				    exit
+				fi
+				display $BLUE INFO "ok let's install git htop curl zsh screen net-tools dnsutils"
+				echo Y | $PACKETMANAGER install git htop curl zsh screen net-tools dnsutils dirmngr fonts-powerline
+				display $BLUE INFO "packages installed"
+				;;
+
+			redhat)
+				if [ "$(whoami)" = "root" ] ; then
+				   continue
+				else
+					display $RED ERROR "Please perform from scratch install from root account"
+				    exit
+				fi
+				display $BLUE INFO "ok let's install git htop curl zsh screen net-tools dnsutils"
+				echo Y | $PACKETMANAGER install git htop curl zsh screen
+				display $BLUE INFO "packages installed"
+				;;
+
 			macos)
 				display $BLUE INFO "ok let's install brew screen"
 				/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -11,20 +35,6 @@ fromScratchInstall () {
 				brew install git htop curl zsh screen
 				display $BLUE INFO "packages installed"
 				;;
-
-			*)
-				if [ "$(whoami)" = "root" ] ; then
-				   continue
-				else
-					display $RED ERROR "Please perform from scratch install from root account"
-				    exit
-				fi
-				display $BLUE INFO "ok let's install git htop curl zsh screen net-tools dnsutils"
-				echo Y | $PACKETMANAGER install git htop curl zsh screen net-tools dnsutils dirmngr 
-				# fonts-powerline
-				display $BLUE INFO "packages installed"
-				;;
-			
 		esac
 	fi
 }
