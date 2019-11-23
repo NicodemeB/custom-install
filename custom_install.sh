@@ -3,15 +3,12 @@
 . ./tools.sh
 . ./setters.sh
 . ./installers.sh
-. ./install-web.sh
-. ./install-openvpn.sh
+
 
 FROMSCRATCH=0
 DISTRI="debian"
 VERBOSE=0
 SHELL=0
-OPENVPN=0
-WEBCV=0
 # agrs:
 # 	1 : color name
 #	2 : message type
@@ -48,17 +45,7 @@ while getopts "$optspec" optchar; do
 					setShell 1
 					;;
 
-				webCV)
-					setWebCV 1
-					;;
 
-				openvpn)
-					setOpenVPN 1
-					;;
-
-				backdoor)
-					echo "WIP"
-					;;
 	
                 # loglevel=*)
                 #     val=${OPTARG#*=}
@@ -95,13 +82,6 @@ while getopts "$optspec" optchar; do
 			setShell 1
 			;;
 
-		w)
-			setWebCV 1
-			;;
-
-		o)
-			setOpenVPN 1
-			;;
 			
         *)
             if [ "$OPTERR" != 1 ] || [ "${optspec:0:1}" = ":" ]; then
@@ -116,10 +96,7 @@ done
 display $YELLOW INFO "Here is the summary of the install : \n\
 distribution \t: $DISTRI\n\
 shell \t\t: $SHELL\n\
-from-scratch \t: $FROMSCRATCH\n\
-openvpn \t: $OPENVPN\n\
-webCV \t\t: $WEBCV\n\
-backdoor \t: WIP"
+from-scratch \t: $FROMSCRATCH"
 
 while true; do
     read -p "Do you wish to install this program? (y/n) : " yn
@@ -135,8 +112,6 @@ disableIPv6
 # installBasicNeeds
 fromScratchInstall
 shellInstall
-WebCVInstall
-OpenVPNInstall
 
 
 # read -n 1 -s -r -p "Press any key to continue"
