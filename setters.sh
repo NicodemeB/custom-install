@@ -12,7 +12,10 @@ setDrisi() {
 		# echo "ok let's use brew"
 		continue
 	elif [ "$DISTRI" = "debian" ] ; then
-		# echo "ok will use apt"
+		PACKETMANAGER='apt'
+		continue
+	elif [ "$DISTRI" = "redhat" ] ; then
+		PACKETMANAGER='yum'
 		continue
 	else
 		display $RED ERROR "What you entered is not supported"
