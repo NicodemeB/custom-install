@@ -20,7 +20,8 @@ fromScratchInstall () {
 				    exit
 				fi
 				display $BLUE INFO "ok let's install git htop curl zsh screen net-tools dnsutils"
-				echo Y | $PACKETMANAGER install git htop curl zsh screen net-tools dnsutils dirmngr fonts-powerline
+				echo Y | $PACKETMANAGER install git htop curl zsh screen net-tools dnsutils dirmngr 
+				# fonts-powerline
 				display $BLUE INFO "packages installed"
 				;;
 			
