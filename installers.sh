@@ -9,9 +9,11 @@ fromScratchInstall () {
 					display $RED ERROR "Please perform from scratch install from root account"
 				    exit
 				fi
+				disableIPv6
 				display $BLUE INFO "ok let's install git htop curl zsh screen net-tools dnsutils"
 				echo Y | $PACKETMANAGER install git htop curl zsh screen net-tools dnsutils dirmngr fonts-powerline
 				display $BLUE INFO "packages installed"
+
 				;;
 
 			redhat)

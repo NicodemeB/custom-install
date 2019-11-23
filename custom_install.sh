@@ -108,7 +108,6 @@ while true; do
 done
 
 importVars
-disableIPv6
 # installBasicNeeds
 fromScratchInstall
 shellInstall
