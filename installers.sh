@@ -14,6 +14,18 @@ fromScratchInstall () {
 				display $BLUE INFO "packages installed"
 				;;
 
+			redhat)
+				if [ "$(whoami)" = "root" ] ; then
+				   continue
+				else
+					display $RED ERROR "Please perform from scratch install from root account"
+				    exit
+				fi
+				display $BLUE INFO "ok let's install git htop curl zsh screen net-tools dnsutils"
+				echo Y | yum install git htop curl zsh screen net-tools dnsutils dirmngr fonts-powerline
+				display $BLUE INFO "packages installed"
+				;;
+
 			macos)
 				display $BLUE INFO "ok let's install brew screen"
 				/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
